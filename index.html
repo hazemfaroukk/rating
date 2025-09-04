@@ -14,24 +14,19 @@
       padding: 40px 20px;
     }
 
-    .top-image {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
-
+    /* بانر الصورة */
     .top-image img {
-      width: 80%;   /* الصورة تاخد 80% من عرض الشاشة */
-      max-width: 600px; /* أقصى حجم 600px */
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      width: 100%;      /* تاخد عرض الشاشة كله */
+      max-height: 400px; /* أقصى ارتفاع للصورة */
+      object-fit: cover; /* تقص وتغطي الشاشة من غير تشويه */
+      display: block;
     }
 
     h1 {
       color: #00f7b6;
       text-align: center;
       font-size: 2.5rem;
-      margin-bottom: 30px;
+      margin: 30px 0;
     }
 
     table {
@@ -111,9 +106,9 @@
   </style>
 </head>
 <body>
-  <!-- الصورة الكبيرة فوق -->
+  <!-- البانر -->
   <div class="top-image">
-    <img src="https://cdn.pixabay.com/photo/2016/11/29/12/54/cinema-1869656_1280.jpg" alt="Banner Image">
+    <img src="https://i.pinimg.com/1200x/21/a0/b7/21a0b7434af3cbb46f5d72dc0be14856.jpg" alt="Banner Image">
   </div>
 
   <h1>My Rating Rules</h1>
