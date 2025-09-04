@@ -27,11 +27,14 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       line-height:1.45;
-      /* keep a subtle vertical rhythm */
       padding-bottom:60px;
+      -webkit-font-smoothing:antialiased;
     }
 
-    /* Blurred full-viewport background copy of the banner to hide seams */
+    /* Blurred full-viewport background copy of the banner to hide seams
+       NOTE: We do NOT scale the background (no zoom) so the main image quality
+       isn't affected. The background is only a blurred representation used to
+       visually blend edges. */
     body::before{
       content: "";
       position:fixed;
@@ -40,9 +43,9 @@
       background-image: url('banner.jpg'); /* change filename if needed */
       background-repeat:no-repeat;
       background-position: center top;
-      background-size: cover;
+      background-size: cover; /* background may crop (it's only decorative) */
       filter: blur(18px) brightness(0.35);
-      transform: scale(1.03); /* avoid edges showing when blurred */
+      /* removed transform/scale to avoid zooming the image and losing quality */
     }
 
     /* A subtle overlay to push palette toward black/gray */
@@ -52,19 +55,38 @@
       background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.75));
     }
 
-    /* HERO / BANNER: show the full image (uncropped) across width */
+    /* HERO / BANNER: show the full image (uncropped) across width
+       Important: main <img> uses object-fit: contain so the whole image appears
+       without zoom. We then add a soft fading overlay at edges so seams aren't visible. */
     .hero{
       width:100%;
       display:block;
       overflow:hidden;
       background:var(--black);
+      position:relative;
     }
     .hero img{
       width:100%;        /* fill horizontally */
       height:auto;       /* keep full height so the whole image shows */
       display:block;
-      object-fit: contain; /* preserve aspect ratio */
+      object-fit: contain; /* preserve aspect ratio and avoid cropping */
       max-height: 65vh;    /* prevent extremely tall images from pushing content down too far */
+      image-rendering: auto; /* prefer default high-quality scaling */
+      -webkit-backface-visibility: hidden; /* help some browsers render sharply */
+      backface-visibility: hidden;
+    }
+
+    /* Fade overlay on the hero so the image edges blend smoothly into background
+       This preserves the full image (no zoom) while hiding any visible seams. */
+    .hero::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(18,18,18,0) 0%, rgba(18,18,18,1) 8%, rgba(18,18,18,1) 92%, rgba(18,18,18,0) 100%),
+        linear-gradient(to right, rgba(18,18,18,0) 0%, rgba(18,18,18,1) 6%, rgba(18,18,18,1) 94%, rgba(18,18,18,0) 100%);
+      mix-blend-mode: normal;
     }
 
     /* CONTENT WRAPPER */
@@ -125,7 +147,7 @@
       font-weight:700;
       letter-spacing:0.6px;
       color:var(--black);
-      background: rgba(255,255,255,0.9); /* white glass */
+      background: rgba(255,255,255,0.95); /* slightly stronger white to contrast on dark blurred back */
       border: 1px solid rgba(255,255,255,0.95);
       box-shadow: 0 6px 26px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.25);
       backdrop-filter: blur(8px) saturate(120%);
