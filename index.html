@@ -3,105 +3,83 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>My Rating Rules</title>
+  <title>My Rating Rules - Star Widget</title>
   <style>
     :root{
-      --black: #000000;
-      --dark: #0b0b0b;
-      --surface: #121214;
-      --light-gray: #d9d9d9;
-      --white: #ffffff;
+      --black:#000000; --dark:#0b0b0b; --white:#ffffff; --light-gray:#d9d9d9;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0;
-      font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
-      color:var(--white);
-      background: var(--dark);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.45;
-      padding-bottom:60px;
+      margin:0; font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+      color:var(--white); background:var(--dark); line-height:1.45; padding-bottom:60px;
     }
 
-    /* blurred background copy (decorative) */
+    /* blurred full-viewport background copy (decorative, hides seams) */
     body::before{
-      content: "";
-      position:fixed; inset:0; z-index:-2;
-      background-image: url('banner.jpg');
-      background-repeat:no-repeat;
-      background-position: center top;
-      background-size: cover;
+      content:""; position:fixed; inset:0; z-index:-2;
+      background-image: url('banner.jpg'); background-repeat:no-repeat; background-position:center top; background-size:cover;
       filter: blur(14px) brightness(0.38);
     }
-    body::after{
-      content:"";
-      position:fixed; inset:0; z-index:-1;
-      background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6));
-    }
+    body::after{ content:""; position:fixed; inset:0; z-index:-1; background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6)); }
 
-    /* HERO: show full image without zoom, then softly fade edges */
-    .hero{ width:100%; display:block; overflow:hidden; position:relative; background:var(--black); }
-    .hero img{
-      width:100%;
-      height:auto;
-      display:block;
-      object-fit: contain;    /* show whole image, no cropping */
-      max-height: 65vh;
-      image-rendering: auto;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
-
-    /* IMPORTANT: soft-edge fade that keeps center visible.
-       Edges darken while center stays transparent so image is clearly seen. */
+    /* HERO BANNER: show full image without zoom; center visible */
+    .hero{ width:100%; display:block; overflow:hidden; position:relative; background:#000 }
+    .hero img{ width:100%; height:auto; display:block; object-fit:contain; max-height: 55vh; image-rendering:auto }
     .hero::after{
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      /* two gradients: vertical and horizontal that are TRANSPARENT in center */
+      content:""; position:absolute; inset:0; pointer-events:none;
       background:
-        linear-gradient(to bottom,
-          rgba(18,18,18,1) 0%,
-          rgba(18,18,18,0.15) 8%,
-          rgba(18,18,18,0.0) 35%,
-          rgba(18,18,18,0.0) 65%,
-          rgba(18,18,18,0.15) 92%,
-          rgba(18,18,18,1) 100%),
-        linear-gradient(to right,
-          rgba(18,18,18,1) 0%,
-          rgba(18,18,18,0.15) 6%,
-          rgba(18,18,18,0.0) 28%,
-          rgba(18,18,18,0.0) 72%,
-          rgba(18,18,18,0.15) 94%,
-          rgba(18,18,18,1) 100%);
-      mix-blend-mode: normal;
+        linear-gradient(to bottom, rgba(18,18,18,1) 0%, rgba(18,18,18,0.15) 6%, rgba(18,18,18,0.0) 30%, rgba(18,18,18,0.0) 70%, rgba(18,18,18,0.15) 94%, rgba(18,18,18,1) 100%),
+        linear-gradient(to right, rgba(18,18,18,1) 0%, rgba(18,18,18,0.15) 6%, rgba(18,18,18,0.0) 28%, rgba(18,18,18,0.0) 72%, rgba(18,18,18,0.15) 94%, rgba(18,18,18,1) 100%);
     }
 
-    .container{ width:min(1100px, 96%); margin: -6px auto 40px; position:relative; z-index:1; }
-    h1{ margin:18px 0 22px; text-align:center; color:var(--white); font-size:2.2rem; letter-spacing:0.4px; text-shadow:0 2px 20px rgba(0,0,0,0.6); }
+    .container{ width:min(1100px,96%); margin:-6px auto 40px; position:relative; z-index:1 }
+    h1{ margin:18px 0 14px; text-align:center; color:var(--white); font-size:2.0rem; letter-spacing:0.4px }
 
+    /* ==========================
+       STAR RATING WIDGET
+       ==========================
+       Structure:
+       - .star-wrap: overall centered container, controls width (responsive)
+       - .crystal: glass/pill background using backdrop-filter
+       - svg.star: inline vector star graphic with glow and small dots
+       - .halo: blurred radial gradient that encloses the star and softens edges
+    */
+    .star-wrap{ display:flex; justify-content:center; margin:12px 0 22px }
+
+    /* sizing: use vw so it scales with viewport but clamp for extremes */
+    .crystal{
+      position:relative; display:inline-grid; place-items:center; gap:8px;
+      width:clamp(160px, 22vw, 320px); height:auto; padding:20px; border-radius:18px;
+      background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px) saturate(120%);
+      -webkit-backdrop-filter: blur(6px) saturate(120%);
+      z-index:2; overflow:visible;
+    }
+
+    /* blurred halo behind crystal to help blending; keeps center clear */
+    .crystal::before{
+      content:''; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      width:220%; height:220%; border-radius:50%; z-index:-1;
+      background: radial-gradient(closest-side, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 30%, rgba(0,0,0,0) 55%);
+      filter: blur(18px) opacity(0.9);
+      pointer-events:none;
+    }
+
+    /* SVG star defaults (keeps crispness) */
+    svg.star{ width:100%; height:auto; display:block }
+
+    /* small caption under widget */
+    .widget-caption{ text-align:center; margin-top:8px; color:rgba(255,255,255,0.9); font-size:0.9rem }
+
+    /* TABLE LAYOUT (same as before) */
     .rating-table{ width:100%; border-collapse:separate; border-spacing:0; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:10px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 1px solid rgba(217,217,217,0.06); }
-    .rating-table thead th{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12)); color: #d9d9d9; text-transform:uppercase; font-size:0.85rem; padding:14px 16px; letter-spacing:1px; border-bottom:1px solid rgba(255,255,255,0.03); }
+    .rating-table thead th{ color: var(--light-gray); text-transform:uppercase; font-size:0.85rem; padding:14px 16px; letter-spacing:1px; }
     .rating-table tbody td{ padding:14px 16px; text-align:center; color:var(--white); font-size:1rem; border-bottom:1px solid rgba(255,255,255,0.02); }
-    .rating-table tbody tr:last-child td{ border-bottom: none }
 
-    .pill{ display:inline-block; min-width:62px; padding:8px 14px; border-radius:999px; font-weight:700; letter-spacing:0.6px; color:var(--black); background: rgba(255,255,255,0.95); border: 1px solid rgba(255,255,255,0.95); box-shadow: 0 6px 26px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.25); backdrop-filter: blur(8px) saturate(120%); -webkit-backdrop-filter: blur(8px) saturate(120%); }
-    .score{ color:#d9d9d9; font-weight:600; }
-    .desc{ color: rgba(255,255,255,0.88); max-width:560px; margin:0 auto; }
-    .rating-table tbody tr:hover{ background: rgba(255,255,255,0.02); }
-
-    @media (max-width:700px){
-      h1{font-size:1.6rem}
-      .hero img{max-height:45vh}
-      .container{width:95%; margin-top:-8px}
-      .rating-table thead{display:none}
-      .rating-table tbody td{display:block; text-align:right; padding-left:48%; position:relative}
-      .rating-table tbody td::before{ content: attr(data-label); position:absolute; left:16px; top:14px; font-weight:700; text-transform:uppercase; color:#d9d9d9; }
-      .pill{min-width:48px; padding:6px 10px}
-    }
+    /* responsive adjustments */
+    @media (max-width:700px){ .hero img{max-height:45vh} .crystal{ width:clamp(140px, 36vw, 220px); padding:14px } }
   </style>
 </head>
 <body>
@@ -112,23 +90,83 @@
   <main class="container">
     <h1>My Rating Rules</h1>
 
+    <!-- STAR WIDGET -->
+    <div class="star-wrap">
+      <div class="crystal" role="img" aria-label="star rating widget">
+        <!-- Vector star built from lines and a center. Scales without quality loss. -->
+        <svg class="star" viewBox="-120 -120 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="4" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <radialGradient id="core" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="white" stop-opacity="1"/>
+              <stop offset="40%" stop-color="white" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="white" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- scattered tiny dots to mimic pixel noise -->
+          <g fill="white" opacity="0.9" filter="url(#glow)">
+            <circle cx="-68" cy="-50" r="1.6" fill="white" opacity="0.9"/>
+            <circle cx="62" cy="-42" r="1.2" fill="white" opacity="0.85"/>
+            <circle cx="-40" cy="58" r="1.0" fill="white" opacity="0.8"/>
+            <circle cx="46" cy="70" r="1.2" fill="white" opacity="0.8"/>
+            <circle cx="0" cy="-90" r="1.6" fill="white" opacity="0.95"/>
+          </g>
+
+          <!-- main star rays: long horizontal/vertical + diagonals -->
+          <g stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
+            <line x1="-110" y1="0" x2="110" y2="0" opacity="0.95"/>
+            <line x1="0" y1="-110" x2="0" y2="110" opacity="0.95"/>
+            <line x1="-78" y1="-78" x2="78" y2="78" stroke-width="3" opacity="0.9"/>
+            <line x1="-78" y1="78" x2="78" y2="-78" stroke-width="3" opacity="0.9"/>
+          </g>
+
+          <!-- secondary shorter rays -->
+          <g stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.95" filter="url(#glow)">
+            <line x1="-64" y1="0" x2="64" y2="0"/>
+            <line x1="0" y1="-64" x2="0" y2="64"/>
+            <line x1="-40" y1="-40" x2="40" y2="40"/>
+            <line x1="-40" y1="40" x2="40" y2="-40"/>
+          </g>
+
+          <!-- tiny spikes around center to simulate pixel starburst -->
+          <g stroke="white" stroke-width="1.6" stroke-linecap="round" opacity="1">
+            <line x1="-18" y1="0" x2="18" y2="0"/>
+            <line x1="0" y1="-18" x2="0" y2="18"/>
+            <line x1="-12" y1="-6" x2="12" y2="6"/>
+            <line x1="-12" y1="6" x2="12" y2="-6"/>
+          </g>
+
+          <!-- bright core circle (uses radial gradient) -->
+          <circle cx="0" cy="0" r="18" fill="url(#core)" />
+        </svg>
+
+        <div class="widget-caption">Rating</div>
+      </div>
+    </div>
+
+    <!-- TABLE (unchanged) -->
     <table class="rating-table" aria-label="Rating rules">
       <thead>
         <tr><th>Rating</th><th>Score</th><th>Description</th></tr>
       </thead>
       <tbody>
-        <tr><td data-label="Rating"><span class="pill">10</span></td><td data-label="Score"><span class="score">5.0</span></td><td data-label="Description"><div class="desc">Perfect</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">09</span></td><td data-label="Score"><span class="score">4.5</span></td><td data-label="Description"><div class="desc">Perfect, but with one flaw</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">08</span></td><td data-label="Score"><span class="score">4.0</span></td><td data-label="Description"><div class="desc">Perfect, but with few flaws</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">07</span></td><td data-label="Score"><span class="score">3.5</span></td><td data-label="Description"><div class="desc">Good movie, but not perfect</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">06</span></td><td data-label="Score"><span class="score">3.0</span></td><td data-label="Description"><div class="desc">Okay, didn’t love it, but don’t regret watching it</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">05</span></td><td data-label="Score"><span class="score">2.5</span></td><td data-label="Description"><div class="desc">Watch it or not — it didn’t make an impact but also wasn’t bad</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">04</span></td><td data-label="Score"><span class="score">2.0</span></td><td data-label="Description"><div class="desc">Regret watching it — bad but not trash</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">03</span></td><td data-label="Score"><span class="score">1.5</span></td><td data-label="Description"><div class="desc">Trash, but with a few positive aspects</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">02</span></td><td data-label="Score"><span class="score">1.0</span></td><td data-label="Description"><div class="desc">Trash, but with one positive aspect</div></td></tr>
-        <tr><td data-label="Rating"><span class="pill">01</span></td><td data-label="Score"><span class="score">0.5</span></td><td data-label="Description"><div class="desc">Complete trash or I hate it</div></td></tr>
+        <tr><td data-label="Rating"><strong>10</strong></td><td data-label="Score">5.0</td><td data-label="Description">Perfect</td></tr>
+        <tr><td data-label="Rating"><strong>09</strong></td><td data-label="Score">4.5</td><td data-label="Description">Perfect, but with one flaw</td></tr>
+        <tr><td data-label="Rating"><strong>08</strong></td><td data-label="Score">4.0</td><td data-label="Description">Perfect, but with few flaws</td></tr>
+        <tr><td data-label="Rating"><strong>07</strong></td><td data-label="Score">3.5</td><td data-label="Description">Good movie, but not perfect</td></tr>
+        <tr><td data-label="Rating"><strong>06</strong></td><td data-label="Score">3.0</td><td data-label="Description">Okay, didn’t love it, but don’t regret watching it</td></tr>
+        <tr><td data-label="Rating"><strong>05</strong></td><td data-label="Score">2.5</td><td data-label="Description">Watch it or not — it didn’t make an impact but also wasn’t bad</td></tr>
+        <tr><td data-label="Rating"><strong>04</strong></td><td data-label="Score">2.0</td><td data-label="Description">Regret watching it — bad but not trash</td></tr>
+        <tr><td data-label="Rating"><strong>03</strong></td><td data-label="Score">1.5</td><td data-label="Description">Trash, but with a few positive aspects</td></tr>
+        <tr><td data-label="Rating"><strong>02</strong></td><td data-label="Score">1.0</td><td data-label="Description">Trash, but with one positive aspect</td></tr>
+        <tr><td data-label="Rating"><strong>01</strong></td><td data-label="Score">0.5</td><td data-label="Description">Complete trash or I hate it</td></tr>
       </tbody>
     </table>
+
   </main>
 </body>
 </html>
