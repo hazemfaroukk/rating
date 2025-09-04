@@ -14,6 +14,19 @@
       padding: 40px 20px;
     }
 
+    .top-image {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .top-image img {
+      width: 80%;   /* الصورة تاخد 80% من عرض الشاشة */
+      max-width: 600px; /* أقصى حجم 600px */
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    }
+
     h1 {
       color: #00f7b6;
       text-align: center;
@@ -24,7 +37,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.15);
       overflow: hidden;
       border-radius: 12px;
       background-color: #1e1e1e;
@@ -32,7 +45,7 @@
 
     th, td {
       padding: 15px;
-      text-align: left;
+      text-align: center;
       border-bottom: 1px solid #333;
     }
 
@@ -41,6 +54,11 @@
       color: #ffffff;
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+
+    tr {
+      transition: background-color 0.3s ease;
     }
 
     tr:hover {
@@ -52,6 +70,12 @@
       font-size: 1rem;
     }
 
+    .rating-10, .rating-09 { color: #00ff88; font-weight: bold; }
+    .rating-08, .rating-07 { color: #66ffcc; }
+    .rating-06, .rating-05 { color: #ffaa00; }
+    .rating-04, .rating-03 { color: #ff6666; }
+    .rating-02, .rating-01 { color: #ff3333; font-weight: bold; }
+
     @media (max-width: 600px) {
       table, thead, tbody, th, td, tr {
         display: block;
@@ -59,6 +83,9 @@
 
       tr {
         margin-bottom: 15px;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 10px;
       }
 
       td {
@@ -76,11 +103,21 @@
         text-transform: uppercase;
         color: #00f7b6;
       }
+
+      th {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- الصورة الكبيرة فوق -->
+  <div class="top-image">
+    <img src="https://cdn.pixabay.com/photo/2016/11/29/12/54/cinema-1869656_1280.jpg" alt="Banner Image">
+  </div>
+
   <h1>My Rating Rules</h1>
+
   <table>
     <thead>
       <tr>
@@ -90,16 +127,16 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td data-label="Rating">10</td><td data-label="Score">5.0</td><td data-label="Description">Perfect</td></tr>
-      <tr><td data-label="Rating">09</td><td data-label="Score">4.5</td><td data-label="Description">Perfect, but with one flaw</td></tr>
-      <tr><td data-label="Rating">08</td><td data-label="Score">4.0</td><td data-label="Description">Perfect, but with few flaws</td></tr>
-      <tr><td data-label="Rating">07</td><td data-label="Score">3.5</td><td data-label="Description">Good movie, but not perfect</td></tr>
-      <tr><td data-label="Rating">06</td><td data-label="Score">3.0</td><td data-label="Description">Okay, didn’t love it, but don’t regret watching it</td></tr>
-      <tr><td data-label="Rating">05</td><td data-label="Score">2.5</td><td data-label="Description">Watch it or not its the same, didn’t make any impact but also wasn’t bad</td></tr>
-      <tr><td data-label="Rating">04</td><td data-label="Score">2.0</td><td data-label="Description">Regret watching it, its bad but not trash</td></tr>
-      <tr><td data-label="Rating">03</td><td data-label="Score">1.5</td><td data-label="Description">Trash, but with a few positive aspects</td></tr>
-      <tr><td data-label="Rating">02</td><td data-label="Score">1.0</td><td data-label="Description">Trash, but with one positive aspect</td></tr>
-      <tr><td data-label="Rating">01</td><td data-label="Score">0.5</td><td data-label="Description">Complete trash or I hate it</td></tr>
+      <tr><td class="rating-10" data-label="Rating">10</td><td data-label="Score">5.0</td><td data-label="Description">Perfect</td></tr>
+      <tr><td class="rating-09" data-label="Rating">09</td><td data-label="Score">4.5</td><td data-label="Description">Perfect, but with one flaw</td></tr>
+      <tr><td class="rating-08" data-label="Rating">08</td><td data-label="Score">4.0</td><td data-label="Description">Perfect, but with few flaws</td></tr>
+      <tr><td class="rating-07" data-label="Rating">07</td><td data-label="Score">3.5</td><td data-label="Description">Good movie, but not perfect</td></tr>
+      <tr><td class="rating-06" data-label="Rating">06</td><td data-label="Score">3.0</td><td data-label="Description">Okay, didn’t love it, but don’t regret watching it</td></tr>
+      <tr><td class="rating-05" data-label="Rating">05</td><td data-label="Score">2.5</td><td data-label="Description">Watch it or not its the same</td></tr>
+      <tr><td class="rating-04" data-label="Rating">04</td><td data-label="Score">2.0</td><td data-label="Description">Regret watching it</td></tr>
+      <tr><td class="rating-03" data-label="Rating">03</td><td data-label="Score">1.5</td><td data-label="Description">Trash, but with a few positives</td></tr>
+      <tr><td class="rating-02" data-label="Rating">02</td><td data-label="Score">1.0</td><td data-label="Description">Trash, with one positive</td></tr>
+      <tr><td class="rating-01" data-label="Rating">01</td><td data-label="Score">0.5</td><td data-label="Description">Complete trash</td></tr>
     </tbody>
   </table>
 </body>
