@@ -1,114 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Rating Rules</title>
-  <style>
-    body {
-      background-color: #121212;
-      color: #e0e0e0;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 40px 20px;
-    }
-
-    /* بانر الصورة */
-    .top-image img {
-      width: 100%;      /* تاخد عرض الشاشة كله */
-      max-height: 400px; /* أقصى ارتفاع للصورة */
-      object-fit: cover; /* تقص وتغطي الشاشة من غير تشويه */
-      display: block;
-    }
-
-    h1 {
-      color: #00f7b6;
-      text-align: center;
-      font-size: 2.5rem;
-      margin: 30px 0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      box-shadow: 0 0 15px rgba(0, 255, 204, 0.15);
-      overflow: hidden;
-      border-radius: 12px;
-      background-color: #1e1e1e;
-    }
-
-    th, td {
-      padding: 15px;
-      text-align: center;
-      border-bottom: 1px solid #333;
-    }
-
-    th {
-      background-color: #222;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 0.9rem;
-    }
-
-    tr {
-      transition: background-color 0.3s ease;
-    }
-
-    tr:hover {
-      background-color: #2a2a2a;
-    }
-
-    td {
-      color: #cccccc;
-      font-size: 1rem;
-    }
-
-    .rating-10, .rating-09 { color: #00ff88; font-weight: bold; }
-    .rating-08, .rating-07 { color: #66ffcc; }
-    .rating-06, .rating-05 { color: #ffaa00; }
-    .rating-04, .rating-03 { color: #ff6666; }
-    .rating-02, .rating-01 { color: #ff3333; font-weight: bold; }
-
-    @media (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-
-      tr {
-        margin-bottom: 15px;
-        border: 1px solid #333;
-        border-radius: 8px;
-        padding: 10px;
-      }
-
-      td {
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
-      }
-
-      td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 15px;
-        top: 15px;
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #00f7b6;
-      }
-
-      th {
-        display: none;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- البانر -->
   <div class="top-image">
-   <img src="rating/banner.jpg" alt="Banner Image">
+    <img src="banner.jpg" alt="Banner Image">
   </div>
 
   <h1>My Rating Rules</h1>
@@ -122,16 +22,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td class="rating-10" data-label="Rating">10</td><td data-label="Score">5.0</td><td data-label="Description">Perfect</td></tr>
-      <tr><td class="rating-09" data-label="Rating">09</td><td data-label="Score">4.5</td><td data-label="Description">Perfect, but with one flaw</td></tr>
-      <tr><td class="rating-08" data-label="Rating">08</td><td data-label="Score">4.0</td><td data-label="Description">Perfect, but with few flaws</td></tr>
-      <tr><td class="rating-07" data-label="Rating">07</td><td data-label="Score">3.5</td><td data-label="Description">Good movie, but not perfect</td></tr>
-      <tr><td class="rating-06" data-label="Rating">06</td><td data-label="Score">3.0</td><td data-label="Description">Okay, didn’t love it, but don’t regret watching it</td></tr>
-      <tr><td class="rating-05" data-label="Rating">05</td><td data-label="Score">2.5</td><td data-label="Description">Watch it or not its the same</td></tr>
-      <tr><td class="rating-04" data-label="Rating">04</td><td data-label="Score">2.0</td><td data-label="Description">Regret watching it</td></tr>
-      <tr><td class="rating-03" data-label="Rating">03</td><td data-label="Score">1.5</td><td data-label="Description">Trash, but with a few positives</td></tr>
-      <tr><td class="rating-02" data-label="Rating">02</td><td data-label="Score">1.0</td><td data-label="Description">Trash, with one positive</td></tr>
-      <tr><td class="rating-01" data-label="Rating">01</td><td data-label="Score">0.5</td><td data-label="Description">Complete trash</td></tr>
+      <tr><td>10</td><td>5.0</td><td>Perfect</td></tr>
+      <tr><td>09</td><td>4.5</td><td>Perfect, but with one flaw</td></tr>
+      <!-- باقي الصفوف -->
     </tbody>
   </table>
 </body>
