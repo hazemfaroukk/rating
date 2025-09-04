@@ -1,6 +1,6 @@
 :root {
-  --color-dark: #0b1c26;   /* اللون الغامق من الصورة */
-  --color-light: #00f7b6;  /* اللون الفاتح من الصورة */
+  --color-dark: #0b1c26;   /* غامق من الصورة */
+  --color-light: #00f7b6;  /* فاتح من الصورة */
 }
 
 body {
@@ -11,14 +11,12 @@ body {
   min-height: 100vh;
 }
 
-/* بانر */
 .top-image img {
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* العنوان */
 h1 {
   color: var(--color-light);
   text-align: center;
@@ -26,7 +24,6 @@ h1 {
   margin: 30px 0;
 }
 
-/* الجدول */
 table {
   width: 90%;
   margin: 0 auto;
